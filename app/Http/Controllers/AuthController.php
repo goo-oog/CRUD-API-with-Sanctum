@@ -16,27 +16,30 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:users,email',
-            'password' => 'required|string|min:3|confirmed'
+            'password' => 'required|string|min:5|confirmed'
         ]);
         if ($validator->fails()) {
-            return [
+            return Response::json([
                 'status' => 'Error',
-                'message' => $validator->messages()->first()
-            ];
+                'message' => $validator->errors()->all()
+            ], 400);
         }
+
         $user = User::create([
             'name' => $request->post('name'),
             'password' => password_hash($request->post('password'), PASSWORD_BCRYPT),
             'email' => $request->post('email')
         ]);
+
         $token = $user->createToken('API Token')->plainTextToken;
+
         return Response::json([
             'status' => 'Success',
             'message' => 'Registration was successful',
             'data' => [
                 'token' => substr($token, strpos($token, '|') + 1)
             ]
-        ], 200);
+        ]);
     }
 
     public function login(Request $request)
@@ -46,13 +49,14 @@ class AuthController extends Controller
             'password' => 'required|string'
         ]);
         if ($validator->fails()) {
-            return [
+            return Response::json([
                 'status' => 'Error',
-                'message' => $validator->messages()->first()
-            ];
+                'message' => $validator->errors()->all()
+            ], 400);
         }
+
         if (!Auth::attempt($request->all())) {
-            return response()->json([
+            return Response::json([
                 'status' => 'Error',
                 'message' => 'Credentials do not match',
             ], 401);
@@ -73,10 +77,11 @@ class AuthController extends Controller
     {
         $user = Auth::user();
         $user->tokens()->delete();
-        return [
+
+        return Response::json([
             'status' => 'Success',
             'message' => 'All tokens revoked for user ' . $user->name
-        ];
+        ]);
     }
 
     public function me()

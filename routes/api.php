@@ -26,10 +26,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::resource('products', ProductsController::class)
         ->only([
-            'index',
-            'store',
-            'show',
-            'update',
-            'destroy'
+            'index',     // GET    '/products'
+            'store',     // POST   '/products'
+            'show',      // GET    '/products/{product}'
+            'update',    // PUT    '/products/{product}'
+            'destroy'    // DELETE '/products/{product}'
         ]);
 });

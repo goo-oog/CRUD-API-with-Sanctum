@@ -1,34 +1,29 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
+use App\Http\Resources\ProductResource;
+use App\Http\Resources\ProductsResource;
 use App\Models\Attribute;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
-use Illuminate\Support\Facades\Validator;
 
 class ProductsController extends Controller
 {
     public function index()
     {
-        return Product::with('attributes')->get(); //->paginate(5) (if many products)
+        return ProductsResource::collection(Product::all());
     }
 
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string'],
-            'description' => ['required', 'string'],
-            'attributes' => ['nullable', 'array'],
-            'attributes.*.key' => ['required', 'string'],
-            'attributes.*.value' => ['required', 'string']
-        ]);
-        if ($validator->fails()) {
-            return [
+        if (isset($request->validator) && $request->validator->fails()) {
+            return Response::json([
                 'status' => 'Error',
-                'message' => $validator->messages()->first()
-            ];
+                'message' => $request->validator->errors()->all()
+            ], 400);
         }
         $product = Product::create([
             'name' => $request->input('name'),
@@ -44,28 +39,21 @@ class ProductsController extends Controller
                 ]);
             }
         }
-        return $product->load('attributes');
+        return new ProductResource($product);
     }
 
     public function show(Product $product)
     {
-        return $product->load('attributes');
+        return new ProductResource($product);
     }
 
-    public function update(Product $product, Request $request)
+    public function update(Product $product, ProductRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => ['required', 'string'],
-            'description' => ['required', 'string'],
-            'attributes' => ['nullable', 'array'],
-            'attributes.*.key' => ['required', 'string'],
-            'attributes.*.value' => ['required', 'string']
-        ]);
-        if ($validator->fails()) {
-            return [
+        if (isset($request->validator) && $request->validator->fails()) {
+            return Response::json([
                 'status' => 'Error',
-                'message' => $validator->messages()->first()
-            ];
+                'message' => $request->validator->errors()->all()
+            ], 400);
         }
         $product->update([
             'name' => $request->input('name'),
@@ -84,7 +72,7 @@ class ProductsController extends Controller
                 );
             }
         }
-        return $product->load('attributes');
+        return new ProductResource($product);
     }
 
     public function destroy(Product $product)
