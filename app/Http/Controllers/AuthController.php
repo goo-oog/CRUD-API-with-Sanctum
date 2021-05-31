@@ -35,10 +35,8 @@ class AuthController extends Controller
 
         return Response::json([
             'status' => 'Success',
-            'message' => 'Registration was successful',
-            'data' => [
-                'token' => substr($token, strpos($token, '|') + 1)
-            ]
+            'message' => ['Registration was successful'],
+            'token' => substr($token, strpos($token, '|') + 1)
         ]);
     }
 
@@ -58,7 +56,7 @@ class AuthController extends Controller
         if (!Auth::attempt($request->all())) {
             return Response::json([
                 'status' => 'Error',
-                'message' => 'Credentials do not match',
+                'message' => ['Credentials do not match'],
             ], 401);
         }
 
@@ -66,10 +64,8 @@ class AuthController extends Controller
 
         return Response::json([
             'status' => 'Success',
-            'message' => 'Login successful',
-            'data' => [
-                'token' => substr($token, strpos($token, '|') + 1)
-            ]
+            'message' => ['Login was successful'],
+            'token' => substr($token, strpos($token, '|') + 1)
         ]);
     }
 
@@ -80,7 +76,7 @@ class AuthController extends Controller
 
         return Response::json([
             'status' => 'Success',
-            'message' => 'All tokens revoked for user ' . $user->name
+            'message' => ['All tokens revoked for user ' . $user->name]
         ]);
     }
 

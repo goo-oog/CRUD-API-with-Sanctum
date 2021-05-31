@@ -60,13 +60,12 @@ class ProductsController extends Controller
             'description' => $request->input('description')
         ]);
         if ($request->input('attributes')) {
+            $product->attributes()->delete();
             foreach ($request->input('attributes') as $attribute) {
-                Attribute::updateOrCreate(
+                Attribute::create(
                     [
                         'product_id' => $product->id,
-                        'key' => $attribute['key']
-                    ],
-                    [
+                        'key' => $attribute['key'],
                         'value' => $attribute['value']
                     ]
                 );
@@ -80,7 +79,7 @@ class ProductsController extends Controller
         $product->delete();
         return Response::json([
             'status' => 'Success',
-            'message' => 'Product with id: ' . $product->id . ' was deleted successfully',
+            'message' => ['Product with id: ' . $product->id . ' was deleted successfully']
         ]);
     }
 }
