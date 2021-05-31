@@ -111,6 +111,6 @@ From there start the php server on **different** port than 8000:
 
     php -S localhost:8080
 
-Please, note that Laravel back-end server should run **on the same host on and port should be 8000** !
+Please, note that Laravel back-end server should run **on the same host and port should be 8000** !
 
 Then open `http://localhost:8080` in your browser.
