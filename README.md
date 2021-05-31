@@ -30,8 +30,8 @@ Now it's possible to test API with Postman (or another application).
 
 In order to use already prepared queries, you can import `ICT.postman_collection.json` from the root folder.
 
-Remember, that after the registration or login you will receive **bearer token** which must be then filled in _
-Authorization_ tab of ICT collection or each query.
+Remember, that after the registration or login you will receive **bearer token** which must be then filled in
+*Authorization* tab of ICT collection or each query.
 
 If you choose to write the queries yourself, then here are all routes and query formats:
 
@@ -103,14 +103,14 @@ If you choose to write the queries yourself, then here are all routes and query 
 
 To make things even more simple, a sample front-end app is provided!
 
-From the root folder navigate to `vue` folder:
+Open a new terminal and navigate to `vue` folder:
 
     cd vue
 
-And from there start the php server on **different** port than 8000:
+From there start the php server on **different** port than 8000:
 
     php -S localhost:8080
 
-Please, note that Laravel back-end server should run **on the same host on port 8000**!
+Please, note that Laravel back-end server should run **on the same host on and port should be 8000** !
 
 Then open `http://localhost:8080` in your browser.
