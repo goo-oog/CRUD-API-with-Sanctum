@@ -1,72 +1,116 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# Setup
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Laravel
 
-## About Laravel
+From project folder run:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and
-creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in
-many web projects, such as:
+    composer install
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache)
-  storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Create database, then open .env file and fill its info there:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+    DB_DATABASE=
+    DB_USERNAME=
+    DB_PASSWORD=
 
-## Learning Laravel
+For testing: PHPUnit uses different database `testing` but you can modify it in phpunit.xml file:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all
-modern web application frameworks, making it a breeze to get started with the framework.
+    <server name="DB_DATABASE" value="testing"/>
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video
-tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging
-into our comprehensive video library.
+Then run migrations with the `--seed` flag to have some products in your table:
 
-## Laravel Sponsors
+    php artisan migrate --seed
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in
-becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+Start the development server and ensure it's running on port 8000:
 
-### Premium Partners
+    php artisan serve
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
+### Postman
 
-## Contributing
+Now it's possible to test API with Postman (or another application).
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in
-the [Laravel documentation](https://laravel.com/docs/contributions).
+In order to use already prepared queries, you can import `ICT.postman_collection.json` from the root folder.
 
-## Code of Conduct
+Remember, that after the registration or login you will receive **bearer token** which must be then filled in _
+Authorization_ tab of ICT collection or each query.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by
-the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+If you choose to write the queries yourself, then here are all routes and query formats:
 
-## Security Vulnerabilities
+##### POST /api/auth/register
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell
-via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    {
+        "name": "Bill Gates",
+        "email": "bill.gates@microsoft.com",
+        "password": "aaaaa",
+        "password_confirmation": "aaaaa"
+    }
 
-## License
+##### POST /api/auth/login
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+    {
+        "email": "bill.gates@microsoft.com",
+        "password": "aaaaa"
+    }
+
+##### GET /api/me
+
+##### POST /api/auth/logout
+
+##### POST /api/products
+
+    {
+        "name": "Milk",
+        "description": "Skimmed milk",
+        "attributes": [
+            {
+                "key": "Fat contents",
+                "value": "0.5%"
+            },
+            {
+                "key": "Volume",
+                "value": "1L"
+            }
+        ]
+    }
+
+##### GET /api/products/:id
+
+##### GET /api/products
+
+##### PUT /api/products/:id
+
+    {
+        "name": "Milk",
+        "description": "Fatty milk",
+        "attributes": [
+            {
+                "key": "Fat contents",
+                "value": "3.5%"
+            },
+            {
+                "key": "Volume",
+                "value": "0.5L"
+            },
+            {
+                "key": "Tasty",
+                "value": "Yes"
+            }
+        ]
+    }
+
+##### DELETE /api/products/:id
+
+### Sample front-end application
+
+To make things even more simple, a sample front-end app is provided!
+
+From the root folder navigate to `vue` folder:
+
+    cd vue
+
+And from there start the php server on **different** port than 8000:
+
+    php -S localhost:8080
+
+Please, note that Laravel back-end server should run **on the same host on port 8000**!
+
+Then open `http://localhost:8080` in your browser.
