@@ -6,11 +6,14 @@ From project folder run:
 
     composer install
 
+Open `composer.json` and run all 4 scripts at the end of that file.
+
 Create database, then open .env file and fill its info there:
 
     DB_DATABASE=
     DB_USERNAME=
     DB_PASSWORD=
+
 
 For testing: PHPUnit uses different database `testing` but you can modify it in phpunit.xml file:
 
@@ -28,7 +31,7 @@ Start the development server and ensure it's running on port 8000:
 
 Now it's possible to test API with Postman (or another application).
 
-In order to use already prepared queries, you can import `ICT.postman_collection.json` from the root folder.
+In order to use already prepared queries, you can import `CRUD API with Sanctum.postman_collection.json` from the root folder.
 
 Remember, that after the registration or login you will receive **bearer token** which must be then filled in
 *Authorization* tab of ICT collection or each query.
