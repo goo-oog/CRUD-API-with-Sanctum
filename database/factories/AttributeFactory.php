@@ -1,19 +1,18 @@
 <?php
-declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\Product;
+use App\Models\Attribute;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ProductFactory extends Factory
+class AttributeFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Product::class;
+    protected $model = Attribute::class;
 
     /**
      * Define the model's default state.
@@ -23,8 +22,8 @@ class ProductFactory extends Factory
     public function definition()
     {
         return [
-            'name' => ucfirst($this->faker->words(rand(1, 2), true)),
-            'description' => ucfirst($this->faker->words(rand(3, 5), true))
+            'key' => ucfirst($this->faker->words(rand(1, 2), true)),
+            'value' => ucfirst($this->faker->words(rand(1, 2), true))
         ];
     }
 }

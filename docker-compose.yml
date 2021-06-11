@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  db:
+    image: mysql
+    container_name: MySQL
+    ports:
+      - 3307:3306
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+      - MYSQL_USER=user1
+      - MYSQL_PASSWORD=abcde
+      - MYSQL_DATABASE=example
+      - MYSQL_INITDB_SKIP_TZINFO=1
+  crud-api:
+    #    build: .
+    image: g74o/crud-api-with-sanctum
+    container_name: CRUD_API
+    command: sh -c "./wait-for-it.sh db:3306 -- php artisan migrate --seed && php artisan serve --host=0.0.0.0 --port=8000"
+    depends_on:
+      - db
+    ports:
+      - 8000:8000
+  nginx:
+    #    build: ./vue
+    image: g74o/crud-api-with-sanctum-vue
+    container_name: nginx
+    environment:
+      - NGINX_HOST=0.0.0.0
+      - NGINX_PORT=80
+    ports:
+      - 8080:80
+    depends_on:
+      - crud-api
