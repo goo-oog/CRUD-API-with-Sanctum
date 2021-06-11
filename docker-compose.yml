@@ -12,8 +12,7 @@ services:
       - MYSQL_DATABASE=example
       - MYSQL_INITDB_SKIP_TZINFO=1
   crud-api:
-    #    build: .
-    image: g74o/crud-api-with-sanctum
+    build: .
     container_name: CRUD_API
     command: sh -c "./wait-for-it.sh db:3306 -- php artisan migrate --seed && php artisan serve --host=0.0.0.0 --port=8000"
     depends_on:
@@ -21,8 +20,7 @@ services:
     ports:
       - 8000:8000
   nginx:
-    #    build: ./vue
-    image: g74o/crud-api-with-sanctum-vue
+    build: ./vue
     container_name: nginx
     environment:
       - NGINX_HOST=0.0.0.0
