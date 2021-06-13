@@ -29,7 +29,6 @@ class ProductsController extends Controller
             'name' => $request->input('name'),
             'description' => $request->input('description')
         ]);
-        $product->save();
         if ($request->input('attributes')) {
             foreach ($request->input('attributes') as $attribute) {
                 Attribute::create([
