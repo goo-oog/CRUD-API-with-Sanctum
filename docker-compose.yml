@@ -7,10 +7,14 @@ services:
       - 3307:3306
     environment:
       - MYSQL_ALLOW_EMPTY_PASSWORD=1
-      - MYSQL_USER=user1
-      - MYSQL_PASSWORD=abcde
-      - MYSQL_DATABASE=example
+#      - MYSQL_DATABASE=crud_api_with_sanctum
       - MYSQL_INITDB_SKIP_TZINFO=1
+    entrypoint:
+      sh -c "
+      echo 'CREATE DATABASE IF NOT EXISTS crud_api_with_sanctum;CREATE DATABASE IF NOT EXISTS testing;'
+      > /docker-entrypoint-initdb.d/init.sql;
+      /usr/local/bin/docker-entrypoint.sh --character-set-server=utf8mb4 --collation-server=utf8mb4_0900_as_ci
+      "
   crud-api:
     build: .
     container_name: CRUD_API

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductsController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,13 +22,5 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/auth/logout', [AuthController::class, 'logout']);
-
-    Route::resource('products', ProductsController::class)
-        ->only([
-            'index',     // GET    '/products'
-            'store',     // POST   '/products'
-            'show',      // GET    '/products/{product}'
-            'update',    // PUT    '/products/{product}'
-            'destroy'    // DELETE '/products/{product}'
-        ]);
+    Route::apiResource('products', ProductsController::class);
 });
